@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="MSPhone" default="package" basedir="../">
+
+    <property environment="env" />
+    
+    <property file="build/${env.ENV}-build.properties" />
+    <property file="build/MSPhone-version.properties" />
+
+    <!-- PATHS -->
+    <property name="app-dir"                value="${basedir}/app" />
+    <property name="docs-dir"               value="${basedir}/docs/api" />
+    <property name="deploy-dir"             value="${basedir}/deploy" />
+    <property name="deploy-debug-dir"       value="${deploy-dir}/debug" />
+    <property name="deploy-release-dir"     value="${deploy-dir}/release" />
+    <property name="app-release"            value="${build.major-version}.${build.minor-version}.${build.number}" />
+    <property name="app-deploy-filename"    value="app-${app-release}.js" />
+
+    <property name="resources-dir"          location="${basedir}/resources" />
+    <property name="css-dir"                location="${resources-dir}/css" />
+    <property name="scss-dir"               location="${resources-dir}/scss" />
+    <property name="images-dir"             location="${resources-dir}/images" />
+    <property name="sencha-dir"             location="${basedir}/lib/touch" />
+    <property name="jslint-dir"             location="${basedir}/lib/jslint4java-2.0.0" />
+    <property name="ms-dir"                 location="${basedir}/lib/ms" />
+    <property name="test-dir"               location="${basedir}/test" />
+
+    <property name="jsb3-file"              value="build/app.jsb3" />
+    <property name="app-css-file"           location="${css-dir}/application.css" />
+
+    <taskdef name="jslint"
+             classname="com.googlecode.jslint4java.ant.JSLintTask"
+             classpath="${jslint-dir}/jslint4java-2.0.0.jar" />
+
+    <target name="Build Info">
+        <echo message="-----------------------------------------" />
+        <echo message="-- VERSION: ${app-release}" />
+        <echo message="-----------------------------------------" />
+        <echo message="-- Environment: ${env.ENV}" />
+        <echo message="-- JAVA_HOME: ${env.JAVA_HOME}" />
+        <echo message="-- gem-dir: ${gem-dir}" />
+        <echo message="-- sencha-binary-dir: ${sencha-binary-dir}" />
+        <echo message="-- browser: ${browser}" />
+        <echo message="-----------------------------------------" />
+        <echo message="-----------------------------------------" />
+
+    </target>
+
+
+    <target name="package" depends="
+          Build Info
+        , Clean
+        , Create Documentation
+        , Sencha Build
+        , Compass CSS
+        , JS Compress
+        , Copy Resources
+    " />
+
+    <target name="Clean">
+        <delete dir="${deploy-dir}" />
+        <mkdir  dir="${deploy-dir}" />
+
+        <delete dir="${docs-dir}" />
+        <mkdir  dir="${docs-dir}" />
+    </target>
+
+    <target name="Create Documentation" depends="jsduck" />
+    <target name="Sencha Build"         depends="build" />
+    <target name="Compass CSS"          depends="css" />
+    <target name="JS Compress"          depends="compress" />
+    <target name="Copy Resources"       depends="copy" />
+    <target name="Jasmine"              depends="jasmine" />
+    <target name="JSLint"               depends="jslint" />
+
+    <target name="jsduck">
+
+        <!-- Copy lib/ms -->
+        <mkdir  dir="${app-dir}/ms" />
+        <copy   todir="${app-dir}/ms">
+            <fileset dir="${ms-dir}">
+                <include name="*/**" />
+            </fileset>
+        </copy>
+
+
+        <exec executable="${jsduck}" dir="${basedir}">
+            <arg value="${app-dir}" />
+            <arg value="-processes=0" />
+            <arg value="--output=${docs-dir}" />
+            <arg value="--ignore-global" />
+        </exec>
+
+        <delete dir="${app-dir}/ms" />
+    </target>
+
+    <target name="build">
+
+        <propertyfile file="build/MSPhone-version.properties">
+            <entry key="build.number" type="int" operation="+" value="1" />
+        </propertyfile>
+
+        <exec executable="${sencha}" dir="${basedir}">
+            <arg line="build -p ${jsb3-file} -d ${deploy-debug-dir} -v" />
+        </exec>
+
+    </target>
+
+    <target name="css">
+        <exec executable="${compass}" dir="${scss-dir}">
+            <arg value="compile" />
+        </exec>
+    </target>
+
+    <target name="compress">
+        <java jar="${compress}" dir="${deploy-debug-dir}" spawn="false" fork="true">
+            <arg line="--type js" />
+            <arg line="--nomunge" />
+            <arg line="-o app.js app-debug.js" />
+        </java>
+    </target>
+
+    <target name="copy" depends="copy-debug, copy-release" />
+
+    <target name="copy-debug">
+        <!-- Copy Libs -->
+        <copy todir="${deploy-debug-dir}">
+            <fileset dir="${sencha-dir}">
+                <include name="sencha-touch-debug.js" />
+            </fileset>
+        </copy>
+
+        <move todir="${deploy-debug-dir}/pkgs/lib">
+            <fileset dir="${deploy-debug-dir}/pkgs/lib">
+                <include name="*.js" />
+            </fileset>
+            <globmapper from="*.js" to="*-${app-release}.js" />
+        </move>
+
+        <!-- Copy Tests -->
+        <copy todir="${deploy-debug-dir}/test">
+            <fileset dir="${test-dir}">
+                <include name="*/**" />
+            </fileset>
+        </copy>
+
+        <!-- Copy Styles -->
+        <copy todir="${deploy-debug-dir}/resources/css">
+            <fileset dir="${css-dir}">
+                <include name="application.css" />
+            </fileset>
+            <fileset dir="${sencha-dir}/resources/css">
+                <include name="sencha-touch.css" />
+            </fileset>
+        </copy>
+
+        <!-- Copy Images -->
+        <copy todir="${deploy-debug-dir}">
+            <fileset dir="${basedir}">
+                <include name="favicon.ico" />
+            </fileset>
+        </copy>
+        <copy todir="${deploy-debug-dir}/resources/images">
+            <fileset dir="${images-dir}">
+                <include name="*" />
+            </fileset>
+        </copy>
+
+        <copy tofile="${deploy-debug-dir}/index.html">
+            <fileset dir="${basedir}/build">
+                <include name="index-debug.html" />
+            </fileset>
+
+            <filterchain>
+                <tokenfilter>
+                    <replaceregex pattern="(.*).js" replace="\1-${app-release}.js" />
+                </tokenfilter>
+                <tokenfilter>
+                    <replaceregex pattern="sencha(.*).js" replace="sencha-touch-debug.js" />
+                </tokenfilter>
+            </filterchain>
+        </copy>
+
+        <echo message="${deploy-debug-dir}/pkgs/lib/3d-core-${app-release}.js" />
+
+        <concat destfile="${deploy-debug-dir}/pkgs/lib/msphone-core-${app-release}-temp.js" append="yes">
+            <fileset dir="${deploy-debug-dir}/pkgs/lib">
+                <include name="msphone-core-${app-release}.js" />
+            </fileset>
+            <footer trimleading="yes" filtering="no">
+                MSPhone.release='${app-release}';
+            </footer>
+        </concat>
+
+        <copy tofile="${deploy-debug-dir}/pkgs/lib/msphone-core-${app-release}.js" overwrite="yes">
+            <fileset dir="${deploy-debug-dir}/pkgs/lib">
+                <include name="msphone-core-${app-release}-temp.js" />
+            </fileset>
+        </copy>
+
+        <delete file="${deploy-debug-dir}/pkgs/lib/msphone-core-${app-release}-temp.js" />
+
+    </target>
+
+    <target name="copy-release">
+        <!-- Copy Libs -->
+        <copy todir="${deploy-release-dir}">
+            <fileset dir="${sencha-dir}">
+                <include name="sencha-touch.js" />
+            </fileset>
+        </copy>
+
+        <!-- Copy Styles -->
+        <copy todir="${deploy-release-dir}/resources/css">
+            <fileset dir="${css-dir}">
+                <include name="application.css" />
+            </fileset>
+            <fileset dir="${sencha-dir}/resources/css">
+                <include name="sencha-touch.css" />
+            </fileset>
+        </copy>
+
+
+        <!-- Copy Images -->
+        <copy todir="${deploy-release-dir}">
+            <fileset dir="${basedir}">
+                <include name="favicon.ico" />
+            </fileset>
+        </copy>
+        <copy todir="${deploy-release-dir}/resources/images">
+            <fileset dir="${images-dir}">
+                <include name="*" />
+            </fileset>
+        </copy>
+
+        <!-- Copy Index -->
+        <copy tofile="${deploy-release-dir}/index.html">
+            <fileset dir="${basedir}/build">
+                <include name="index-deploy.html" />
+            </fileset>
+
+            <filterchain>
+                <tokenfilter>
+                    <replaceregex pattern="(.*).js" replace="\1-${app-release}.js" />
+                </tokenfilter>
+                <tokenfilter>
+                    <replaceregex pattern="sencha(.*).js" replace="sencha-touch.js" />
+                </tokenfilter>
+            </filterchain>
+
+        </copy>
+
+        <concat destfile="${deploy-release-dir}/${app-deploy-filename}" append="yes">
+            <fileset dir="${deploy-debug-dir}">
+                <include name="app.js" />
+            </fileset>
+            <footer trimleading="yes" filtering="no">
+                MSPhone.release='${app-release}';
+            </footer>
+        </concat>
+
+    </target>
+
+    <target name="jasmine">
+        <exec dir="${basedir}" executable="${browser}" spawn="true">
+            <arg line="localhost:8080/MSPhone/test/unit/index.html" />
+        </exec>
+    </target>
+
+    <target name="jslint">
+        <jslint options="undef, white, sloppy, plusplus, vars, regexp, nomen">
+            <!-- output files -->
+            <formatter type="plain" destfile="${basedir}/build/jslintReport.txt" />
+            <formatter type="xml"   destfile="${basedir}/build/jslintReport.xml" />
+
+            <!-- input files -->
+            <fileset dir="${app-dir}"   includes="**/*.js" excludes="**/*.pack.js" />
+            <fileset dir="${ms-dir}"    includes="**/*.js" excludes="**/*.pack.js" />
+        </jslint>
+    </target>
+</project>

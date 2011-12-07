@@ -1,0 +1,305 @@
+{
+    "projectname": "MSPhone",
+    "licenseText": "Copyright &copy; 2011 Morgan Stanley",
+    "packages": [
+        {
+            "name"  : "DATA_FIX",
+            "target": "pkgs/lib/data-fix.js",
+            "id"    :  "lib-ms-dataFix",
+            "files" : [
+                {
+                    "path" : "../lib/ms/data/",
+                    "name" : "Ext.data.Connection.FIX.js"
+                },
+                {
+                    "path" : "../lib/ms/data/",
+                    "name" : "Ext.data.Model.FIX.js"
+                },
+                {
+                    "path" : "../lib/ms/data/",
+                    "name" : "Ext.data.Store.FIX.js"
+                },
+                {
+                    "path" : "../lib/ms/data/readers/",
+                    "name" : "Ext.data.readers.Reader.FIX.js"
+                },
+                {
+                    "path" : "../lib/ms/data/proxies/",
+                    "name" : "Ext.data.AjaxProxy.FIX.js"
+                },
+                {
+                    "path" : "../lib/ms/data/proxies/",
+                    "name" : "Ext.data.MemoryProxy.FIX.js"
+                },
+                {
+                    "path" : "../lib/ms/",
+                    "name" : "Ext.Component.FIX.js"
+                }
+            ]
+        },
+        {
+            "name"  : "MS Common",
+            "target": "pkgs/lib/ms.js",
+            "id"    : "lib-ms",
+            "files" : [
+                {
+                    "path": "../lib/ms/components/",
+                    "name": "ConfigurationManager.js"
+                },
+                {
+                    "path": "../lib/ms/data/readers/",
+                    "name": "JsonObjectReader.js"
+                }
+            ]
+        },
+        {
+            "name"  : "MSPhone Core",
+            "target": "pkgs/lib/msphone-core.js",
+            "id"    : "msphone-core",
+            "options" :
+            {
+                "debug" : true
+            },
+            "files" : [
+                {
+                    "path": "../lib/ms/components/",
+                    "name": "parametersValidator.js"
+                },
+
+                {
+                    "path": "../app/",
+                    "name": "app.js"
+                },
+                {
+                    "path": "../app/",
+                    "name": "userSettings.js"
+                },
+                {
+                    "path": "../app/",
+                    "name": "config.js"
+                }
+            ]
+        },
+        {
+            "name"  : "MSPhone Views",
+            "target": "pkgs/lib/msphone-views.js",
+            "id"    : "msphone-views",
+            "options" :
+            {
+                "debug" : true
+            },
+            "files" : [
+                {
+                    "path": "../app/views/",
+                    "name": "Login.View.js"
+                },
+                {
+                    "path": "../app/views/",
+                    "name": "views.Viewport.js"
+                },
+                {
+                    "path": "../app/views/",
+                    "name": "Recents.View.js"
+                },
+                {
+                    "path": "../app/views/",
+                    "name": "Options.View.js"
+                },
+                {
+                    "path": "../app/views/",
+                    "name": "Keypad.View.js"
+                },
+                {
+                    "path": "../app/views/",
+                    "name": "IConf.View.js"
+                },
+                {
+                    "path": "../app/views/",
+                    "name": "Contacts.View.js"
+                },
+
+                {
+                    "path": "../app/views/recents/",
+                    "name": "Recents.Toolbar.View.js"
+                },
+                {
+                    "path": "../app/views/recents/",
+                    "name": "Recents.List.View.js"
+                },
+
+                {
+                    "path": "../app/views/contacts/",
+                    "name": "Contacts.Toolbar.View.js"
+                },
+                {
+                    "path": "../app/views/contacts/",
+                    "name": "Contacts.List.View.js"
+                },
+                {
+                    "path": "../app/views/contacts/",
+                    "name": "Contacts.Search.View.js"
+                },
+
+                {
+                    "path": "../app/views/details/",
+                    "name": "details.Contact.Edit.View.js"
+                },
+                {
+                    "path": "../app/views/details/",
+                    "name": "details.Contact.View.js"
+                },
+                {
+                    "path": "../app/views/details/",
+                    "name": "details.Recent.View.js"
+                },
+                {
+                    "path": "../app/views/details/",
+                    "name": "details.Toolbar.View.js"
+                },
+
+                {
+                    "path": "../app/views/keypad/",
+                    "name": "Keypad.ButtonAction.View.js"
+                },
+                {
+                    "path": "../app/views/keypad/",
+                    "name": "Keypad.ButtonNumber.View.js"
+                },
+                {
+                    "path": "../app/views/keypad/",
+                    "name": "Keypad.PanelAction.View.js"
+                },
+                {
+                    "path": "../app/views/keypad/",
+                    "name": "Keypad.PanelDial.View.js"
+                },
+                {
+                    "path": "../app/views/keypad/",
+                    "name": "Keypad.PanelNumber.View.js"
+                },
+                {
+                    "path": "../app/views/keypad/",
+                    "name": "Keypad.PanelWaiting.View.js"
+                },
+                {
+                    "path": "../app/views/options/",
+                    "name": "Options.PanelOtherNumber.View.js"
+                }
+
+            ]
+        },
+        {
+            "name"  : "MSPhone Models",
+            "target": "pkgs/lib/msphone-models.js",
+            "id"    : "msphone-models",
+            "options" :
+            {
+                "debug" : true
+            },
+            "files" : [
+                {
+                    "path": "../app/models/",
+                    "name": "models.Session.js"
+                },
+                {
+                    "path": "../app/models/",
+                    "name": "models.Call.js"
+                },
+                {
+                    "path": "../app/models/",
+                    "name": "models.CallbackNumber.js"
+                },
+                {
+                    "path": "../app/models/",
+                    "name": "models.Contact.js"
+                },
+                {
+                    "path": "../app/models/",
+                    "name": "Option.Model.js"
+                },
+                {
+                    "path": "../app/models/",
+                    "name": "models.Recent.js"
+                }
+            ]
+        },
+        {
+            "name"  : "MSPhone Stores",
+            "target": "pkgs/lib/msphone-stores.js",
+            "id"    : "msphone-stores",
+            "options" :
+            {
+                "debug" : true
+            },
+            "files" : [
+                {
+                    "path": "../app/stores/",
+                    "name": "OnlineStore.js"
+                },
+                {
+                    "path": "../app/stores/",
+                    "name": "stores.Offline.js"
+                }
+            ]
+        },
+        {
+            "name"  : "MSPhone Controllers",
+            "target": "pkgs/lib/msphone-controllers.js",
+            "id"    : "msphone-controllers",
+            "options" :
+            {
+                "debug" : true
+            },
+            "files" : [
+                {
+                    "path": "../app/controllers/",
+                    "name": "controllers.Session.js"
+                },
+                {
+                    "path": "../app/controllers/",
+                    "name": "Contacts.Controller.js"
+                },
+                {
+                    "path": "../app/controllers/",
+                    "name": "controllers.details.js"
+                },
+                {
+                    "path": "../app/controllers/",
+                    "name": "Keypad.Controller.js"
+                },
+                {
+                    "path": "../app/controllers/",
+                    "name": "Options.Controller.js"
+                },
+                {
+                    "path": "../app/controllers/",
+                    "name": "Recents.Controller.js"
+                },
+                {
+                    "path": "../app/controllers/",
+                    "name": "controllers.Viewport.js"
+                }
+            ]
+        }
+
+    ],
+
+    "builds": [
+        {
+            "name"      : "MSPhone",
+            "target"    : "app-debug.js",
+            "debug"     : false,
+            "options"   : {
+                "minVersion": 1.1
+            },
+            "packages"  : [ "lib-ms-dataFix",
+                "lib-ms",
+                "msphone-core",
+                "msphone-views",
+                "msphone-models",
+                "msphone-stores",
+                "msphone-controllers"
+            ]
+        }
+    ]
+}

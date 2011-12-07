@@ -1,0 +1,148 @@
+.x-tablet .x-list, .x-desktop .x-list {
+  border-right: 0px solid #000;
+}
+
+.vertical {
+    background-color: #cbd2d8;
+    background-image: -webkit-gradient(linear, 0 0, 100% 0, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+}
+
+.transparent {
+    background-color: transparent;
+}
+
+.stripes {
+height: 250px;
+width: 375px;
+float: left;
+
+margin: 0;
+
+-webkit-background-size: 5px 15px;
+}
+
+.x-panel {
+    -webkit-backface-visibility: hidden;
+}
+
+.msPhoneFavorites {
+  -webkit-mask-box-image: url('../images/favorites.png');
+}
+
+.msPhoneOptions {
+  -webkit-mask-box-image: url('../images/settings.png');
+}
+
+.msPhoneRecents {
+  -webkit-mask-box-image: url('../images/recents.png');
+}
+
+.msPhoneContacts {
+  -webkit-mask-box-image: url('../images/contacts.png');
+}
+
+.msPhoneIconf {
+  -webkit-mask-box-image: url('../images/iconf.png');
+}
+
+.msPhoneKeypad {
+  -webkit-mask-box-image: url('../images/keypad.png');
+}
+
+.msPhoneVoicemail {
+  -webkit-mask-box-image: url('../images/voicemail.png');
+}
+
+.search-background {
+	background-color: #0000FF !important;
+}
+
+.x-disclosure {
+	height: 24px;
+	width: 24px;
+	-webkit-mask-box-image:  url('../images/disclosure.png');
+}
+
+.recents {
+	width: 500px;
+}
+
+.keypadPanel {
+  border:0px !important;
+}
+
+.keypadNumberPanel {
+  /*background-image: url('../images/keypad/number.png');*/
+  text-align:center;
+  font-size:200%;
+  color:white;
+  -webkit-background-size: 100%;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #5b7496), color-stop(60%, #112f59), color-stop(100%, #092955));
+}
+
+.keypadButtonNumber {
+  -webkit-border-radius: 0em;
+  -webkit-background-size: 100%;
+  font-size:150%;
+  font-weight: bold;
+  color:white;
+  text-align: center;
+  border-top: 1px solid #313740 !important;
+  border-bottom: 0px !important;
+  border-right: 1px solid #313740 !important;
+  border-left: 0px !important;
+  text-shadow: 0px 0px 0px #787c82 !important;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #313740), color-stop(2%, #121a25), color-stop(100%, #0e1621));
+}
+
+.keypadModal {
+  vertical-align: middle;
+  text-align:center;
+  -webkit-border-radius: 0em;
+  font-size:150%;
+  -webkit-background-size: 100%;
+  border:0px !important;
+  text-shadow: 0px 0px 0px #787c82 !important;
+}
+
+.keypadButtonAction {
+  -webkit-border-radius: 0em;
+  font-size:150%;
+  color:white;
+  -webkit-background-size: 100%;
+ border-top: 1px solid #313740 !important;
+  border-bottom: 0px !important;
+  border-right: 1px solid #313740 !important;
+  border-left: 0px !important;
+  text-shadow: 0px 0px 0px #787c82 !important;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #1d2e45), color-stop(2%, #081a32), color-stop(100%, #081a32));
+}
+
+.keypadCall {
+  -webkit-border-radius: 0em;
+  font-size:140%;
+  color:white;
+  -webkit-background-size: 100%;
+ border-top: 1px solid #313740 !important;
+  border-bottom: 0px !important;
+  border-right: 1px solid #313740 !important;
+  border-left: 0px !important;
+  text-shadow: -1px -1px 0px #787c82 !important;
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0%, #73dc70), color-stop(50%, #1ebe19), color-stop(100%, #25b523));
+}
+
+.infoText {
+    font-size: 12px;
+    color: black;
+    margin: 10px;
+}
+
+.infoText2 {
+    font-size: 12px;
+    color: black;
+    font-weight: bold;
+    margin: 10px;
+    margin-top: 20px;
+    display: block;
+    clear: both;
+}
