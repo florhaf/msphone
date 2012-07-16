@@ -1,5 +1,5 @@
 /*
-Copyright(c) 2011 Company Name
+Copyright(c) 2012 Company Name
 */
 /**
  * @private
@@ -35724,6 +35724,55 @@ Ext.define('MSPhone.view.Keypad', {
     }
 });
 
+Ext.define('MSPhone.view.QuickDial', {
+    extend  : 'Ext.Container',
+    xtype   : 'quickdial',
+
+    config: {
+        id      : 'quickdial',
+        scrollable : 'vertical',
+        layout: {
+          align: 'center'
+        },
+        items	: [{
+            xtype	: 'toolbar',
+            docked	: 'top',
+            title	: 'Quick Dial'
+        },{
+            xtype : 'button',
+            cls : 'x-ms-button',
+            text : 'Voicemail',
+            width: '95%',
+            height: '30px',
+            listeners : {
+                tap : function() {
+
+                    var me = this;
+
+                    Ext.Msg.prompt('Voicemail', 'Enter your voicemail PIN', function(buttonId, value){
+
+                        if (buttonId == 'ok') {
+
+                            me.getParent().fireEvent('callVoiceMail', value);
+                        }
+                    });
+                }
+            }
+        },{
+            xtype : 'button',
+            cls : 'x-ms-button',
+            width: '95%',
+            height: '30px',
+            text : 'Help Desk',
+            listeners : {
+                tap : function() {
+
+                    this.getParent().fireEvent('callHelpDesk');
+                }
+            }
+        }]
+    }
+});
 Ext.define('MSPhone.controller.Keypad', {
 	extend	: 'Ext.app.Controller',
 	
@@ -35768,10 +35817,11 @@ Ext.define('MSPhone.controller.Keypad', {
 			message	: 'Calling...'
 		});
 
-        if (this.crtNumber.plain.substr(0, 2) != '+1') {
-
-            this.crtNumber.plain = '+1' + this.crtNumber.plain
-        }
+        // force US numbers
+//        if (this.crtNumber.plain.substr(0, 2) != '+1') {
+//
+//            this.crtNumber.plain = '+1' + this.crtNumber.plain
+//        }
 
 		Ext.Ajax.request({
 			url			: '/mobile/msphoneios/webapp/service/rest/makecall/' + this.crtNumber.plain,
@@ -36134,6 +36184,53 @@ Ext.define('MSPhone.controller.Options', {
 			Ext.Msg.alert('Error', error);
 		}
 	}
+});
+Ext.define('MSPhone.controller.QuickDial', {
+    extend	: 'Ext.app.Controller',
+
+    config : {
+        refs : {
+            view : 'quickdial'
+        },
+        control : {
+            view : {
+                callHelpDesk : 'callHelpDesk',
+                callVoiceMail : 'callVoiceMail'
+            }
+        },
+
+        callVoiceMail : function(options) {
+
+            this.getView().setMasked({
+                xtype	: 'loadmask',
+                message	: 'Calling voicemail...'
+            });
+
+            Ext.Ajax.request({
+                url			: '/mobile/msphoneios/webapp/service/rest/callvoicemail',
+                method		: 'POST',
+                scope		: this,
+                callback	: this.callback,
+                params		: {
+                    pin : options.pin
+                }
+            });
+        },
+        callHelpDesk : function() {
+
+            this.getView().setMasked({
+                xtype	: 'loadmask',
+                message	: 'Calling helpdesk...'
+            });
+
+            Ext.Ajax.request({
+                url			: '/mobile/msphoneios/webapp/service/rest/callhelpdesk',
+                method		: 'GET',
+                scope		: this,
+                callback	: this.callback
+            });
+        }
+    }
 });
 /**
  * @aside guide forms
@@ -51161,23 +51258,14 @@ Ext.define('MSPhone.view.Recents', {
         	docked	: 'top',
         	title	: 'Recent Calls',
         	items	: [{
+        		xtype	: 'spacer'
+        	},{
         		xtype	: 'button',
         		text	: 'Edit',
         		listeners : {
         			tap : function(button) {
-        				
-        				this.getParent().getParent().fireEvent('edit', button);
-        			}
-        		}
-        	},{
-        		xtype	: 'spacer'
-        	},{
-        		xtype	: 'button',
-        		text	: 'Clear',
-        		listeners : {
-        			tap : function(button) {
-        				
-        				this.getParent().getParent().fireEvent('clear', button);
+
+                        this.getParent().getParent().fireEvent('edit', button);
         			}
         		}
         	}]
@@ -51236,6 +51324,8 @@ Ext.define('MSPhone.view.contacts.Personal', {
 		emptyText	: 'empty',
 		items		: [{
 			xtype	: 'toolbar',
+            ui      : 'light',
+            cls     : 'msToolbar',
 			items	: [{
 				xtype	: 'searchfield',
 				width	: '95%',
@@ -51257,6 +51347,8 @@ Ext.define('MSPhone.view.contacts.Directory', {
 	        items	: [{
 	        	xtype	: 'toolbar',
 	        	docked	: 'top',
+                ui      : 'light',
+                cls     : 'msToolbar',
 	        	items	: [{
 	        		xtype	: 'searchfield',
 	        		width	: '95%',
@@ -51294,6 +51386,8 @@ Ext.define('MSPhone.view.contacts.Crm', {
 	        items	: [{
 	        	xtype	: 'toolbar',
 	        	docked	: 'top',
+                ui      : 'light',
+                cls     : 'msToolbar',
 	        	items	: [{
 	        		xtype	: 'searchfield',
 	        		width	: '95%',
@@ -52952,156 +53046,127 @@ selectBox.setOptions(
 });
 
 Ext.define('MSPhone.view.Options', {
-    extend  : 'Ext.Container',
-    xtype   : 'options',
+    extend:'Ext.Container',
+    xtype:'options',
 
-    requires : [
+    requires:[
         'Ext.form.FieldSet',
         'Ext.field.Select',
         'Ext.field.Checkbox',
         'Ext.field.Password'
     ],
-    
-    config  : {
-        id      : 'options',
-        scrollable : 'vertical',
-        items	: [{
-        	xtype	: 'toolbar',
-        	docked	: 'top',
-        	title	: 'Options'
-        },{
-			xtype	: 'fieldset',
-			title	: 'Callback number',
-			defaults : {
-				labelAlign	: 'left',
-				labelWidth	: '50%'
-			},
-			items	: [{
-				xtype	: 'selectfield',
-				name	: 'callback_numbers',
-				listeners : {
-					change : function(comp, value) {
-						
-						this.getParent().getParent().fireEvent('setCallbackNumber', value.data.value);
-					}
-				}
-			}, {
-				xtype	: 'button',
-				text	: 'new',
-				name	: 'newCallbackNumber',
-				listeners : {
-					tap : function() {
-						
-						var me = this;
-						
-						Ext.Msg.prompt('New', 'callback number with country code', function(buttonId, value){
-							
-							if (buttonId == 'ok') {
-							
-								me.getParent().getParent().fireEvent('setCallbackNumber', value);
-							}
-							
-						});
-					}
-				}
-			}]
-		}, {
-			xtype	: 'fieldset',
-			title	: 'ECS',
-			defaults : {
-				labelAlign	: 'left',
-				labelWidth	: '50%'
-			},
-			items	: [{
-				xtype	: 'checkboxfield',
-				label	: 'call forwarding',
-				name	: 'ecs',
-				listeners : {
-					check : function() {
+
+    config:{
+        id:'options',
+        scrollable:'vertical',
+        items:[
+            {
+                xtype:'toolbar',
+                docked:'top',
+                title:'Settings'
+            },
+            {
+                xtype:'button',
+                cls : 'x-ms-button',
+                width:'95%',
+                height:'30px',
+                text:'Help Desk',
+                listeners:{
+                    tap:function () {
+
+                        this.getParent().fireEvent('callHelpDesk');
+                    }
+                }
+            },
+            {
+                cls:'ecsTitle',
+                html:'Callback Number'
+            },
+            {
+                xtype:'selectfield',
+                cls:'callbackDropdown',
+                name:'callback_numbers',
+                listeners:{
+                    change:function (comp, value) {
+
+                        this.getParent().getParent().fireEvent('setCallbackNumber', value.data.value);
+                    }
+                }
+            },
+            {
+                xtype:'button',
+                text:'Add new',
+                cls : 'x-ms-button buttonAddNew',
+                name:'newCallbackNumber',
+                width:'120px',
+                listeners:{
+                    tap:function () {
 
                         var me = this;
 
-						Ext.Msg.prompt('ECS', 'PIN', function(buttonId, value){
+                        Ext.Msg.prompt('New', 'callback number with country code', function (buttonId, value) {
 
-							if (buttonId == 'ok') {
+                            if (buttonId == 'ok') {
 
-								me.getParent().getParent().fireEvent('setEcs', value);
-							}
-						});
-					},
-					uncheck : function() {
-						
-						this.getParent().items.items[1].setValue('');
-						
-						this.getParent().getParent().fireEvent('setEcs', { action : false, pin : '' });
-					}
-				}
-			}]
-		},{
-			xtype : 'fieldset',
-			title : 'Speed dial',
-			items : [{
-				xtype : 'button',
-				text : 'Help Desk',
-				listeners : {
-					tap : function() {
-						
-						this.getParent().getParent().fireEvent('callHelpDesk');
-					}
-				}
-			},{
-				xtype : 'button',
-				text : 'Voicemail',
-				listeners : {
-					tap : function() {
+                                me.getParent().getParent().fireEvent('setCallbackNumber', value);
+                            }
 
-                        var me = this;
+                        });
+                    }
+                }
+            },
+            {
+                cls:'ecsTitle',
+                html:'Call Forwarding'
+            },
 
-						Ext.Msg.prompt('Voicemail', 'PIN', function(buttonId, value){
+            {
+                cls:'ecsText',
+                html:'When set to on, this feature will ring both your mobile phone and your desk phone.'
+            },
+            {
 
-							if (buttonId == 'ok') {
+                xtype:'button',
+                text:'Activate ECS',
+                name:'newCallbackNumber',
+                width:'120px',
+                cls:'x-ms-button buttonAddNew',
+                listeners:{
+                    tap:function () {
+                    }
+                }
 
-								me.getParent().getParent().fireEvent('callVoiceMail', value);
-							}
-						});
-					}
-				}
-			}]
-		}
-//		,{
-//			xtype	: 'fieldset',
-//			title	: 'Voicemail',
-//			defaults : {
-//				labelAlign	: 'left',
-//				labelWidth	: '50%'
-//			},
-//			items	: [{
-//				xtype	: 'checkboxfield',
-//				label	: 'notification',
-//				name	: 'voicemail_notification',
-//				listeners : {
-//					check : function() {
-//						
-//						this.getParent().items.items[1].focus();
-//					},
-//					uncheck : function() {
-//						
-//						this.getParent().items.items[1].setValue('');
-//					}
-//				}
-//			}, {
-//				xtype	: 'passwordfield',
-//				label	: 'PIN',
-//				name	: 'voicemail_pin'
-//			}]
-//		}
-		],
-		listeners : {
-			painted : function() {
-				
-				this.fireEvent('customPainted', this);
-			}
-		}
+//                xtype:'checkboxfield',
+//                label:'call forwarding',
+//                name:'ecs',
+//                listeners:{
+//                    check:function () {
+//
+//                        var me = this;
+//
+//                        Ext.Msg.prompt('ECS', 'PIN', function (buttonId, value) {
+//
+//                            if (buttonId == 'ok') {
+//
+//                                me.getParent().getParent().fireEvent('setEcs', value);
+//                            }
+//                        });
+//                    },
+//                    uncheck:function () {
+//
+//                        this.getParent().items.items[1].setValue('');
+//
+//                        this.getParent().getParent().fireEvent('setEcs', { action:false, pin:'' });
+//                    }
+//                }
+            }
+        ],
+        listeners:{
+            painted:function () {
+
+                this.fireEvent('customPainted', this);
+            }
+        }
     }
 });
 

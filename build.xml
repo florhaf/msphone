@@ -4,7 +4,7 @@
 
     <property environment="env" />
 
-    <target name="package" depends="jsb, build, copy, clean">
+    <target name="package" depends="jsb, build">
     </target>
 
     <target name="jsb">
@@ -12,7 +12,7 @@
         <delete dir="./">
             <include name="app.jsb3"/>
         </delete>
-        <exec executable="/Applications/SenchaSDKTools-2/command/sencha" dir="./">
+        <exec executable="/Applications/SenchaSDKTools-2/sencha" dir="./">
             <arg line="create jsb -a index-debug.html -p app.jsb3 -v" />
         </exec>
     </target>
@@ -25,7 +25,7 @@
     </target>
 
     <target name="build">
-        <exec executable="/Applications/SenchaSDKTools-2/command/sencha" dir="./">
+        <exec executable="/Applications/SenchaSDKTools-2/sencha" dir="./">
             <arg line="build -p app.jsb3 -d ./ -v" />
         </exec>
     </target>

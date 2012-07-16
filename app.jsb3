@@ -1,6 +1,6 @@
 {
     "projectName": "Project Name",
-    "licenseText": "Copyright(c) 2011 Company Name",
+    "licenseText": "Copyright(c) 2012 Company Name",
     "builds": [
         {
             "name": "All Classes",
@@ -770,6 +770,11 @@
                     "path": "app/view/"
                 },
                 {
+                    "clsName": "MSPhone.view.QuickDial",
+                    "name": "QuickDial.js",
+                    "path": "app/view/"
+                },
+                {
                     "clsName": "MSPhone.controller.Keypad",
                     "name": "Keypad.js",
                     "path": "app/controller/"
@@ -777,6 +782,11 @@
                 {
                     "clsName": "MSPhone.controller.Options",
                     "name": "Options.js",
+                    "path": "app/controller/"
+                },
+                {
+                    "clsName": "MSPhone.controller.QuickDial",
+                    "name": "QuickDial.js",
                     "path": "app/controller/"
                 },
                 {
