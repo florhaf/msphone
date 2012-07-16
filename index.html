@@ -1,89 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
-    <title>msPhone</title>
-    
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
-    <!--<meta name="viewport" content="width=device-width" />-->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    
-    <link rel="stylesheet" href="lib/touch/resources/css/apple.css" type="text/css">
-    <link rel="stylesheet" href="resources/css/application.css" type="text/css">
-</head>
-<body>
-    <script type="text/javascript" src="lib/touch/sencha-touch-debug.js"></script>
-    <script type="text/javascript" src="lib/touch/pkgs/platform/mvc.js"></script>
-    
-    <div id="sencha-fixes">
-        <script type="text/javascript" src="lib/ms/data/Ext.data.Connection.FIX.js"></script>
-        <script type="text/javascript" src="lib/ms/data/Ext.data.Model.FIX.js"></script>
-        <script type="text/javascript" src="lib/ms/data/Ext.data.Store.FIX.js"></script>
-        <script type="text/javascript" src="lib/ms/data/readers/JsonObjectReader.js"></script>
-        <script type="text/javascript" src="lib/ms/data/readers/Ext.data.readers.Reader.FIX.js"></script>
-        <script type="text/javascript" src="lib/ms/data/proxies/Ext.data.AjaxProxy.FIX.js"></script>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta HTTP-EQUIV="Content-Type" CONTENT="text/html;charset=iso-8859-1">
+        <meta HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <meta HTTP-EQUIV="expires" CONTENT="0">
+        <!-- START_REPLACE -->
 
-        <script type="text/javascript" src="lib/ms/components/ConfigurationManager.js"></script>
-    </div>
-    
-    <div id="plugins">
-    	
-    </div>
-    
-    <div id="sencha-app">
-        <script type="text/javascript" src="app/app.js"></script>
-        <script type="text/javascript" src="app/config.js"></script>
+        <title>MSPhone</title>
+        
+        <script type="text/javascript" src="http://toolkits.ms.com/webaurora/core.js"></script>
+        
+        <script type="text/javascript">    
+            Module = new WebAuroraEnvironment("dev");    
+            Module.load('ria', 'sencha-touch', '2.0.0-loader-g');
+        </script>
 
-        <div id="store">
-            <script type="text/javascript" src="app/stores/stores.Online.js"></script>
-            <script type="text/javascript" src="app/stores/stores.Offline.js"></script>
-        </div>
-        
-        <div id="sencha-models">
-        	<script type="text/javascript" src="app/models/models.Contact.js"></script>
-        	<script type="text/javascript" src="app/models/models.Recent.js"></script>
-            <script type="text/javascript" src="app/models/models.Call.js"></script>
-            <script type="text/javascript" src="app/models/models.CallbackNumber.js"></script>
-            <script type="text/javascript" src="app/models/models.Option.js"></script>
-            <script type="text/javascript" src="app/models/models.Session.js"></script>
-        </div>
-        
-        <div id="sencha-views">
-        	<script type="text/javascript" src="app/views/details/views.details.Toolbar.js"></script>
-        	<script type="text/javascript" src="app/views/details/views.details.Recent.js"></script>
-        	<script type="text/javascript" src="app/views/details/views.details.Contact.js"></script>
-            <script type="text/javascript" src="app/views/details/views.details.ContactEdit.js"></script>
-        	<script type="text/javascript" src="app/views/recents/views.recents.Toolbar.js"></script>
-        	<script type="text/javascript" src="app/views/recents/views.recents.List.js"></script>
-        	<script type="text/javascript" src="app/views/contacts/views.contacts.Toolbar.js"></script>
-        	<script type="text/javascript" src="app/views/contacts/views.contacts.Search.js"></script>
-        	<script type="text/javascript" src="app/views/contacts/views.contacts.List.js"></script>
-            <script type="text/javascript" src="app/views/keypad/views.keypad.ButtonNumber.js"></script>
-            <script type="text/javascript" src="app/views/keypad/views.keypad.ButtonAction.js"></script>
-            <script type="text/javascript" src="app/views/keypad/views.keypad.PanelDial.js"></script>
-            <script type="text/javascript" src="app/views/keypad/views.keypad.PanelNumber.js"></script>
-            <script type="text/javascript" src="app/views/keypad/views.keypad.PanelAction.js"></script>
-            <script type="text/javascript" src="app/views/keypad/views.keypad.PanelWaiting.js"></script>
-            <script type="text/javascript" src="app/views/options/views.options.PanelOtherNumber.js"></script>
-            <script type="text/javascript" src="app/views/views.Recents.js"></script>
-            <script type="text/javascript" src="app/views/views.Contacts.js"></script>
-            <script type="text/javascript" src="app/views/views.IConf.js"></script>
-            <script type="text/javascript" src="app/views/views.Keypad.js"></script>
-            <script type="text/javascript" src="app/views/views.Options.js"></script>
-            <script type="text/javascript" src="app/views/views.Login.js"></script>
-            <script type="text/javascript" src="app/views/views.Viewport.js"></script>
-        </div>
-        
-        <div id="sencha-controllers">
-            <script type="text/javascript" src="app/controllers/controllers.Abstract.EditableList.js"></script>
-            <script type="text/javascript" src="app/controllers/controllers.Session.js"></script>
-        	<script type="text/javascript" src="app/controllers/controllers.Recents.js"></script>
-        	<script type="text/javascript" src="app/controllers/controllers.Contacts.js"></script>
-            <script type="text/javascript" src="app/controllers/controllers.Keypad.js"></script>
-            <script type="text/javascript" src="app/controllers/controllers.Options.js"></script>
-            <script type="text/javascript" src="app/controllers/controllers.Viewport.js"></script>
-        </div>
-    </div>
-</body>
+        <link rel="stylesheet" href="lib/touch2/resources/css/apple.css" type="text/css" />
+        <link rel="stylesheet" href="resources/css/application.css" type="text/css">
+
+        </script>
+
+    </head>
+
+    <body id="rwf-body">
+        <script type="text/javascript" src="app.js"></script>
+    </body>
 </html>
